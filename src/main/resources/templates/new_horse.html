@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml
+"
+      xmlns:th="http://www.thymeleaf.org
+">
+<head>
+  <meta charset="UTF-8">
+  <title>Nowy koń</title>
+
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+  <link rel="preconnect" href="https://fonts.googleapis.com
+">
+  <link rel="preconnect" href="https://fonts.gstatic.com
+" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lemon&display=swap
+" rel="stylesheet">
+  <link href="/css/mystyle.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="background-image"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success static-top">
+  <div class="container">
+    <a class="navbar-brand lemon-font" style="font-size:19px" href="/">
+      <img src="/images/house-heart-fill.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      Stadnina Warszawska
+    </a>
+  </div>
+</nav>
+
+<div class="adding-horse-form">
+  <h1>Dodaj nowego konia</h1>
+
+  <form action="#" th:action="@{/save_horse}" th:object="${horse}" method="post">
+    <table border="1" cellpadding="10">
+      <tr>
+        <td>Numer konia</td>
+        <td><input type="text" th:field="*{Nr_Konia}"></td>
+      </tr>
+      <tr>
+        <td>Imie konia</td>
+        <td><input type="text" th:field="*{Imie}" maxlength="20"></td>
+      </tr>
+      <tr>
+        <td>Płeć</td>
+        <td>
+          <select th:field="*{Plec}">
+            <option value="K">Klacz</option>
+            <option value="O">Ogier</option>
+        </td>
+      </tr>
+      <tr>
+        <td>Data urodzenia</td>
+        <td><input type="date" th:field="*{Data_urodzenia}"></td>
+      </tr>
+      <tr>
+        <td>Numer stajni</td>
+        <td><input type="text" th:field="*{Nr_Stajni}"></td>
+      </tr>
+      <tr>
+        <td>Rasa</td>
+        <td>
+          <select th:field="*{Nr_Rasy}">
+            <option th:each="rasa : ${listBreeds}"
+                    th:value="${rasa.Nr_Rasy}"
+                    th:text="${rasa.Nazwa}">Rasa</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" class="centered-cell"><button class="btn btn-success" type="submit">Zapisz</button></td>
+      </tr>
+
+    </table>
+  </form>
+
+</div>
+
+<div class="footer bg-success">
+  <div class="container text-right">
+    <a class="navbar-brand lemon-font">
+      <img src="/images/house-heart-fill.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      Stadnina Warszawska
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org
+"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5
+">
+<head>
+  <meta charset="UTF-8">
+  <title>Nowy właściciel</title>
+
+  <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+  <link rel="preconnect" href="https://fonts.googleapis.com
+">
+  <link rel="preconnect" href="https://fonts.gstatic.com
+" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lemon&display=swap
+" rel="stylesheet">
+  <link href="/css/mystyle.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="background-image"></div>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success static-top">
+  <div class="container">
+    <a class="navbar-brand lemon-font" style="font-size:19px" href="/">
+      <img src="/images/house-heart-fill.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      Stadnina Warszawska
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            aria-controls="navbarResponsive"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" style="color: white" th:href="@{/breeds}">Rasy</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" style="color: white" th:href="@{/horses}">Konie</a>
+        </li>
+
+        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbarPracownicy" role="button" data-toggle="dropdown" aria-expanded="false">
+            Pracownicy
+          </a>
+          <ul class="dropdown-menu bg-success" aria-labelledby="navbarPracownicy">
+            <li><a class="dropdown-item text-white" th:href="@{/employees}">Lista pracowników</a></li>
+            <li><a class="dropdown-item text-white" th:href="@{/assign_caretaker}">Przydziel opiekuna</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link" style="color: white" th:href="@{/owners}">Właściciele koni</a>
+        </li>
+
+        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+          <a class="nav-link dropdown-toggle" style="color: white" href="#" id="navbarAdresy" role="button" data-toggle="dropdown" aria-expanded="false">
+            Adresy
+          </a>
+          <ul class="dropdown-menu bg-success" aria-labelledby="navbarAdresy">
+            <li><a class="dropdown-item text-white" th:href="@{/adresses}">Lista adresów</a></li>
+            <li><a class="dropdown-item text-white" th:href="@{/postcodes}">Poczta</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <a class="nav-link" style="color: white">Jesteś zalogowany/a jako <b
+                  style="text-transform:capitalize">[[${#httpServletRequest.remoteUser}]]</b></a>
+        </li>
+
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <form method="post" th:action="@{/}">
+            <button class="btn btn-success" type="submit" onclick="successfullyLogout()" value="Sign Out">Wyloguj się</button>
+          </form>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="adding-employee-form">
+  <h1 class="center-text">Dodaj nowego własciciela koni</h1>
+
+  <form action="#" th:action="@{/save_owner}" th:object="${owner}" method="post">
+    <table border="1" cellpadding="10">
+      <tr>
+        <td>Numer Właściciela</td>
+        <td><input type="text" th:field="*{Nr_Wlasciciela}"></td>
+      </tr>
+      <tr>
+        <td>Imię</td>
+        <td><input type="text" th:field="*{Imie}" maxlength="20"></td>
+      </tr>
+      <tr>
+        <td>Nazwisko</td>
+        <td><input type="text" th:field="*{Nazwisko}" maxlength="30"></td>
+      </tr>
+      <tr>
+        <td>PESEL</td>
+        <td><input type="number" th:field="*{PESEL}" pattern="\d{11}"></td>
+      </tr>
+      <tr>
+        <td>Numer dokumentu</td>
+        <td><input type="text" th:field="*{Nr_Dokumentu}" maxlength="15"></td>
+      </tr>
+      <tr>
+        <td>Telefon</td>
+        <td><input type="text" th:field="*{Telefon}" maxlength="11"></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><input type="text" th:field="*{Email}" maxlength="30"></td>
+      </tr>
+      <tr>
+        <td>Adres</td>
+        <td>
+          <select th:field="*{Nr_Adresu}">
+            <option th:each="adress : ${listAdresses}"
+                    th:value="${adress.Nr_Adresu}"
+                    th:text="${adress.Miejscowosc} + ${adress.Ulica}">Adres</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Stadnina</td>
+        <td><input type="text" th:field="*{Nr_Stadniny}"></td>
+      </tr>
+      <tr>
+        <td>Login</td>
+        <td><input type="text" th:field="*{Login}" maxlength="10"></td>
+      </tr>
+      <tr>
+        <td>Hasło</td>
+        <td><input type="text" th:field="*{Haslo}" maxlength="20"></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="centered-cell"><button class="btn btn-success" type="submit">Zapisz</button></td>
+      </tr>
+    </table>
+  </form>
+
+</div>
+
+<div class="footer bg-success">
+  <div class="container text-right">
+    <a class="navbar-brand lemon-font">
+      <img src="/images/house-heart-fill.svg" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+      Stadnina Warszawska
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
